@@ -1,8 +1,7 @@
 # BlazorNasaImages
-A sample Blazor app that fetches the Nasa Astronomy Picture of the Day.
+A sample Blazor app that use the Open Data Nasa APIs to fetch images from the Nasa Astronomy Picture of the Day service.
 
 ### Points of interest
-
 1. Simple dinamic page layout change with a one-way binding to a boolean field and two components:
 
 ```
@@ -39,8 +38,10 @@ catch (Exception ex)
     });
 </script>
 ```
+(from the example of Javascript interopt found in the [Learn Blazor site](https://learn-blazor.com/architecture/interop/)).
 
-(from the example of Javascript interopt found in the [Learn Blazor site](https://learn-blazor.com/architecture/interop/))
+Here's the result:
+![image](https://user-images.githubusercontent.com/139274/40505385-4fdee964-5f94-11e8-909b-1c428da51020.png)
 
 ### ApiKey
 The key used in the source is an anonymous one (DEMO_KEY).
