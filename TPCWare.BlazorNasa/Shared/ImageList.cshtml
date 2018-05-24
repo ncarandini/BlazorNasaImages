@@ -1,0 +1,23 @@
+﻿<table class="tabl pb-4">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Url</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var imageInfo in NasaImageInfoList)
+        {
+            <tr>
+                <td>@imageInfo.Title</td>
+                <td><a href="@imageInfo.Url">@imageInfo.Url</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@functions {
+
+[Parameter]
+NasaImageInfo[] NasaImageInfoList { get; set; }
+}

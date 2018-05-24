@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Blazor Nasa</title>
+    <base href="/" />
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/site.css" rel="stylesheet" />
+</head>
+<body>
+    <app>Loading...</app>
+
+    <script type="blazor-boot"></script>
+
+    <script>
+        // Register a Javascript function
+        Blazor.registerFunction('consoleLog', (data) => {
+            console.dir(data);
+
+            // Your function currently has to return something. We just return `true`.
+            return true;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+﻿@page "/fetchimages"
+@inject HttpClient Http
+@using Microsoft.AspNetCore.Blazor.Browser.Interop
+
+<h1>Nasa images</h1>
+
+@if (nasaImageInfoList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    @if (cardView)
+    {
+        <ImageCards NasaImageInfoList="@nasaImageInfoList" />
+    }
+    else
+    {
+        <ImageList NasaImageInfoList="@nasaImageInfoList" />
+    }
+
+    <div class="pt-4">
+        <button onclick="@SwitchView">@(cardView ? "Switch to List" : "Switch to Card")</button>
+        <button onclick="@ShowHideJson">@(String.IsNullOrWhiteSpace(visibleJson) ? "Show" : "Hide") Json</button>
+    </div>
+
+    <p class="pt-4">
+        @visibleJson
+    </p>
+}
+
+@functions {
+
+    // Beware that this anonymous key has big usage restrictions,
+    // please get your free apiKey at https://api.nasa.gov/index.html#apply-for-an-api-key
+    // and use it to replace the "DEMO_KEY" apiKey value.
+    string apiKey = "DEMO_KEY";
+
+    int maxNumOfItems = 5;
+
+    NasaImageInfo[] nasaImageInfoList;
+    string jsonText;
+    string visibleJson;
+    bool cardView = true;
+
+    protected override async Task OnInitAsync()
+    {
+        try
+        {
+            Http.BaseAddress = new Uri("https://api.nasa.gov");
+            var httpResponse = await Http.GetAsync($"/planetary/apod?api_key={apiKey}&count={maxNumOfItems}");
+            jsonText = await httpResponse.Content.ReadAsStringAsync();
+            nasaImageInfoList = JsonUtil.Deserialize<NasaImageInfo[]>(jsonText);
+
+            // throw new Exception("Errore nel fetch dell'immagine.");
+        }
+        catch (Exception ex)
+        {
+            RegisteredFunction.Invoke<bool>("consoleLog", ex);
+        }
+    }
+
+    protected void ShowHideJson()
+    {
+        visibleJson = String.IsNullOrWhiteSpace(visibleJson) ? jsonText : String.Empty;
+    }
+
+    protected void SwitchView()
+    {
+        cardView = !cardView;
+    }
+
+    /*
+    {
+        "copyright": "Hubble Legacy Archive",
+        "date": "2017-07-12",
+        "explanation": "A bright spiral galaxy of the northern sky, Messier 63 is about 25 million light-years distant in the loyal constellation Canes Venatici. Also cataloged as NGC 5055, the majestic island universe is nearly 100,000 light-years across. That's about the size of our own Milky Way Galaxy. Known by the popular moniker, The Sunflower Galaxy, M63 sports a bright yellowish core in this sharp composite image from space- and ground-based telescopes. Its sweeping blue spiral arms are streaked with cosmic dust lanes and dotted with pink star forming regions. A dominant member of a known galaxy group, M63 has faint, extended features that are likely star streams from tidally disrupted satellite galaxies. M63 shines across the electromagnetic spectrum and is thought to have undergone bursts of intense star formation.",
+        "hdurl": "https://apod.nasa.gov/apod/image/1707/M63-HST-Subaru-LL.jpg",
+        "media_type": "image",
+        "service_version": "v1",
+        "title": "Messier 63: The Sunflower Galaxy",
+        "url": "https://apod.nasa.gov/apod/image/1707/M63-HST-Subaru-S1024.jpg"
+    }
+    */
+
+    // https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&count=5
+    // https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&start_date=2017-07-05&end_date=2017-07-10
+    // https://api.nasa.gov/planetary/apod?api_key=HAZGkY5EWpw4pNrNIzsbtKAzCei53iYTXKBELo3Y&count=5
+    // string apiKey = "DEMO_KEY";
+
+}
+
+

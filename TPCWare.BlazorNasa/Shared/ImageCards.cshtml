@@ -1,0 +1,20 @@
+﻿<div class="row">
+    @foreach (var imageInfo in NasaImageInfoList)
+    {
+        <div class="col-sm-6 pb-4">
+            <div class="card">
+                <img class="card-img-top" src="@imageInfo.Url" alt="Card image">
+                <div class="card-body">
+                    <h4 class="card-title">@imageInfo.Title</h4>
+                    <p class="card-text">@imageInfo.Explanation</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@functions {
+
+    [Parameter]
+    NasaImageInfo[] NasaImageInfoList { get; set; }
+}
